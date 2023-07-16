@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Realtime Chat Application with React And Firestore
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Simple but powerful chat application that everybody can use to communicate using text messages. It's like a Discord server or a Slack room with a single channel. To enter the chat and interact with people, the user must log in using their Google account. Once logged in, the user can read their previous messages and start sending messages. All messages are stored in a Firestore database and are synced in real-time with this React application.
+
+Typing indicator: notifies the recipient when a user starts typing a chat to them
+
+User status: indicates whether the user is online or offline
+
+We'll create a login function that uses Firebase Authentication to sign in a user via a Google sign-in. We'll store the authenticated user in state and make this information and the login function available to components through the Context API. We'll also use Firestore SDK functions to read from and write to our database. A custom hook that reads database messages will allow components to get the latest synchronized data.
 
 ## Available Scripts
 
