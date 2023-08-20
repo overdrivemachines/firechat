@@ -1,5 +1,7 @@
 # Realtime Chat Application with React And Firestore
 
+Tutorial: https://www.zachsnoek.com/blog/how-to-build-chatroom-app-react-firebase and https://github.com/zachsnoek/react-firebase-chat-app
+
 Simple but powerful chat application that everybody can use to communicate using text messages. It's like a Discord server or a Slack room with a single channel. To enter the chat and interact with people, the user must log in using their Google account. Once logged in, the user can read their previous messages and start sending messages. All messages are stored in a Firestore database and are synced in real-time with this React application.
 
 Typing indicator: notifies the recipient when a user starts typing a chat to them
