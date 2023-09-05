@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { MessageInput } from "../MessageInput";
 import { chatRooms } from "../../data/chatRooms";
+import { MessageList } from "../MessageList";
 import "./styles.css";
 
 // display the chatroom information and provide a link back to the landing page
@@ -21,6 +22,7 @@ function ChatRoom() {
         <Link to="/">⬅️ Back to all rooms</Link>
       </div>
       <div className="messages-container">
+        <MessageList roomId={room.id} />
         <MessageInput roomId={room.id} />
       </div>
     </>
