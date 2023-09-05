@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -39,6 +39,7 @@ async function loginWithGoogle() {
   }
 }
 
+// called by MessageInput component when the user submits their message
 async function sendMessage(roomId, user, text) {
   try {
     await addDoc(collection(db, "chat-rooms", roomId, "messages"), {
@@ -52,4 +53,20 @@ async function sendMessage(roomId, user, text) {
   }
 }
 
-export { loginWithGoogle, sendMessage };
+// Fetching room messages.
+// Used by <MessageList> component.
+function getMessages(roomId, callback) {
+  // The onSnapshot SDK function lets us take advantage of Firestore’s real-time updates.
+  // It listens to the result of a query and receives updates when a change is made.
+  // onSnapshot returns an unsubscribe function to detach the listener so that our callback isn’t called when it’s no longer needed
+  return onSnapshot(query(collection(db, "chat-rooms", roomId, "messages"), orderBy("timestamp", "asc")), (querySnapshot) => {
+    // this gets called when we receive the initial query and any subsequent updates
+    const messages = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    callback(messages);
+  });
+}
+
+export { loginWithGoogle, sendMessage, getMessages };
