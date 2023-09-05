@@ -2,6 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,6 +17,9 @@ const firebaseConfig = {
 // initializeApp returns a Firebase App instance, which allows our application
 // to use common configuration and authentication across Firebase services.
 const app = initializeApp(firebaseConfig);
+// initialize a Firestore instance, which returns a reference to the
+// Firestore service that we can use to perform reads and writes.
+const db = getFirestore(app);
 
 // Returns {uid, displayName}
 async function loginWithGoogle() {
@@ -35,4 +39,17 @@ async function loginWithGoogle() {
   }
 }
 
-export { loginWithGoogle };
+async function sendMessage(roomId, user, text) {
+  try {
+    await addDoc(collection(db, "chat-rooms", roomId, "messages"), {
+      uid: user.uid,
+      displayName: user.displayName,
+      text: text.trim(),
+      timestamp: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export { loginWithGoogle, sendMessage };
